@@ -1,0 +1,38 @@
+services:
+  app:
+    build:
+      context: ./docker-compose-conf/php
+      dockerfile: Dockerfile
+    user: "${UID:-1000}:${GID:-1000}"
+    image: food_shop
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+
+  webserver:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "5000:80"
+        volumes:
+            - .:/var/www
+            - ./docker-compose-conf/nginx:/etc/nginx/conf.d/
+        depends_on:
+            - app
+
+  db:
+        image: postgres:16-alpine
+        restart: unless-stopped
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+
+volumes:
+    pgdata:
+
