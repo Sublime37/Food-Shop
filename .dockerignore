@@ -20,6 +20,7 @@ bootstrap/cache/*
 *.sln
 *.swp
 
+
 .DS_Store
 Thumbs.db
 
@@ -31,3 +32,6 @@ Dockerfile
 
 tests/
 README.md
+
+phpstan.neon
+phpcs.xml

@@ -1,0 +1,12 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - routes/
+    excludePaths:
+        - vendor/
+        - storage/
+    # Уровень строгости от 0 до 9 (рекомендуется начинать с 5)
+    level: 5
