@@ -24,10 +24,11 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "id_products" => ["required", "array", "max:10", "min:1"],
-            "id_products.*" => ["required", "integer"],
-            "address" => ["required", "string"],
-            "promocode" => ["string", "min:1", "max:20"]
+            "products" => ["required", "array", "max:10", "min:1"],
+            "products.*.id" => ["required", "integer", "exists:products,id", "distinct"],
+            "products.*.qty" => ["required", "integer", "min:1", "max:100"],
+            "address" => ["required", "string", "max:255"],
+            "promocode" => ["nullable", "string", "min:1", "max:20"]
         ];
     }
 
@@ -35,15 +36,22 @@ class OrderRequest extends FormRequest
     public function messages()
     {
         return [
-            "id_products.required" => "Продуктов нету в корзине",
-            "id_products.array" => "Передан не массив",
-            "id_products.max" => "Корзина переполнена",
-            "id_products.min" => "Добавьте хотя бы один товар",
-            "address.required" => "Укажите адрес доставки",
-            "address.string" => "Адрес не является строкой",
-            "promocode.string" => "Промокод не является строкой",
-            "promocode.min" => "нету такого промокода",
-            "promocode.max" => "нету такого промокода"
+            "products.required" => "Продуктов нету в корзине.",
+            "products.array" => "Передан не массив.",
+            "products.max" => "Корзина переполнена.",
+            "products.min" => "Добавьте хотя бы один товар.",
+            "products.*.id.required" => "Недопустимое значение.",
+            "products.*.id.integer" => "Поле продукта не является строкой.",
+            "products.*.id.exists" => "Нет такого продукта.",
+            "products.*.id.distinct" => "Дубликат продукта.",
+            "products.*.qty.required" => "Не указно количество.",
+            "products.*.qty.min" => "Недопустимый диапазон.",
+            "products.*.qty.max" => "Недопустимый диапазон.",
+            "address.required" => "Укажите адрес доставки.",
+            "address.string" => "Адрес не является строкой.",
+            "promocode.string" => "Промокод не является строкой.",
+            "promocode.min" => "Нет такого промокода.",
+            "promocode.max" => "Нет такого промокода."
         ];
     }
 }

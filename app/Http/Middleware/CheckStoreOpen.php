@@ -14,18 +14,18 @@ class CheckStoreOpen
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        $now = CarbonImmutable::now();
-        $open = CarbonImmutable::parse("8:00");
-        $close = CarbonImmutable::parse("17:00");
+        $now = CarbonImmutable::now(config("store.timezone"));
+        $open = CarbonImmutable::parse(config("store.open"), config("store.timezone"));
+        $close = CarbonImmutable::parse(config("store.close"), config("store.timezone"));
 
-        if(!$now->between($open, $close)){
+        if (!$now->between($open, $close)) {
             return response()->json(
                 [
                     "status" => "Магазин закрыт"
                 ],
-                400
+                403
             );
         }
         return $next($request);
