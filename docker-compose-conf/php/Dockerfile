@@ -15,7 +15,3 @@ RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
-
-RUN chown -R www-data:www-data /var/www
-
-USER www-data
